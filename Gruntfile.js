@@ -43,7 +43,8 @@ module.exports = function (grunt) {
       },
       jstest: {
         files: ['test/spec/{,*/}*.js'],
-        tasks: ['test:watch']
+        //tasks: ['test:watch']
+        tasks: ['continue-test']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -360,6 +361,8 @@ module.exports = function (grunt) {
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
+      'connect:test',
+      'mocha',
       'watch'
     ]);
   });
@@ -380,6 +383,13 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'connect:test',
+      'mocha'
+    ]);
+  });
+
+  grunt.registerTask('continue-test', function (target) {
+    grunt.task.run([
+      //'connect:test',
       'mocha'
     ]);
   });
