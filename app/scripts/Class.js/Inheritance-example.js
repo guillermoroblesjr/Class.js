@@ -7,7 +7,7 @@
  * New objects will be instantiated using Object.create() instead of 'new Fn()'.
  * A polyfill is included if the browser does not support Object.create().
  */
-
+// jshint ignore: start
 // Object.create() Pollyfills (these run automatically if needed)
 // Ref. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
 (function(window, undefined){

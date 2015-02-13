@@ -1,4 +1,5 @@
 // Example Usage
+// jshint ignore: start
 (function(window, undefined){
   
   'use strict';
