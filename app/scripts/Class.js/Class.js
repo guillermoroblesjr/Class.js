@@ -130,6 +130,9 @@
     };;
     return properties;
   };
+  Class.prototype.temp = function temp(){
+    return 'I am a temp function.';
+  };
   // Class.prototype.getPropertiesFrom = function getPropertiesFrom(class, instance){
   //   var properties = this.getAllProperties();
   //   for (var key in properties) {

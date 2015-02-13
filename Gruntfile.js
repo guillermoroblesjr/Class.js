@@ -16,6 +16,9 @@ module.exports = function (grunt) {
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
+  grunt.loadNpmTasks('grunt-mocha-istanbul');
+  grunt.loadNpmTasks('grunt-blanket-mocha');
+
   // Configurable paths
   var config = {
     app: 'app',
@@ -94,6 +97,7 @@ module.exports = function (grunt) {
               connect.static('.tmp'),
               connect.static('test'),
               connect().use('/bower_components', connect.static('./bower_components')),
+              connect().use('/node_modules', connect.static('./node_modules')),
               connect.static(config.app)
             ];
           }
@@ -106,7 +110,54 @@ module.exports = function (grunt) {
         }
       }
     },
-
+    blanket_mocha: {
+      test: {
+        src: ['specs/test.html'],
+        options : {
+            threshold : 70
+        }
+      }
+    },
+    mocha_istanbul: {
+        coverage: {
+            src: 'test/**/*.js', // a folder works nicely
+            options: {
+                //mask: '*.spec.js',
+                //reportFormats: ['cobertura','lcovonly', 'html']
+                reportFormats: ['html']
+            }
+        }//,
+        // coverageSpecial: {
+        //     src: ['testSpecial/*/*.js', 'testUnique/*/*.js'], // specifying file patterns works as well
+        //     options: {
+        //         coverageFolder: 'coverageSpecial',
+        //         mask: '*.spec.js'
+        //     }
+        // },
+        // coveralls: {
+        //     src: ['test', 'testSpecial', 'testUnique'], // multiple folders also works
+        //     options: {
+        //         coverage:true,
+        //         check: {
+        //             lines: 75,
+        //             statements: 75
+        //         },
+        //         root: './lib', // define where the cover task should consider the root of libraries that are covered by tests
+        //         reportFormats: ['cobertura','lcovonly']
+        //     }
+        // }
+    },
+    istanbul_check_coverage: {
+      default: {
+        options: {
+          coverageFolder: 'coverage*', // will check both coverage folders and merge the coverage results
+          check: {
+            lines: 80,
+            statements: 80
+          }
+        }
+      }
+    },
     // Empties folders to start fresh
     clean: {
       dist: {
@@ -140,6 +191,8 @@ module.exports = function (grunt) {
     mocha: {
       all: {
         options: {
+          log: true,
+          logErros: true,
           run: true,
           urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html']
         }
@@ -383,7 +436,8 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'connect:test',
-      'mocha'
+      'mocha',
+      'blanket_mocha'
     ]);
   });
 
@@ -415,4 +469,6 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.registerTask('coverage', ['mocha_istanbul:coverage']);
 };
