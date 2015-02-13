@@ -129,16 +129,16 @@
     };;
     return properties;
   };
-  Class.prototype.getPropertiesFrom = function getPropertiesFrom(class, instance){
-    var properties = this.getAllProperties();
-    for (var key in properties) {
-      if (class.prototype.isPrototypeOf(instance)) {
+  // Class.prototype.getPropertiesFrom = function getPropertiesFrom(class, instance){
+  //   var properties = this.getAllProperties();
+  //   for (var key in properties) {
+  //     if (class.prototype.isPrototypeOf(instance)) {
         
-      };
-    }
+  //     };
+  //   }
 
-    //AnimalClass.prototype.isPrototypeOf(dog);
-  };
+  //   //AnimalClass.prototype.isPrototypeOf(dog);
+  // };
   // Attach to the window
   window.Class = Object.create(Class.prototype);
 })(window);
