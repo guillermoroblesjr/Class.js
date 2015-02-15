@@ -16,8 +16,10 @@ module.exports = function (grunt) {
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
-  grunt.loadNpmTasks('grunt-mocha-istanbul');
-  grunt.loadNpmTasks('grunt-blanket-mocha');
+  // grunt.loadNpmTasks('grunt-mocha-istanbul');
+  // grunt.loadNpmTasks('grunt-blanket-mocha');
+  // grunt.loadNpmTasks('grunt-karma');
+  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   // Configurable paths
   var config = {
@@ -118,46 +120,6 @@ module.exports = function (grunt) {
         }
       }
     },
-    mocha_istanbul: {
-        coverage: {
-            src: 'test/**/*.js', // a folder works nicely
-            options: {
-                //mask: '*.spec.js',
-                //reportFormats: ['cobertura','lcovonly', 'html']
-                reportFormats: ['html']
-            }
-        }//,
-        // coverageSpecial: {
-        //     src: ['testSpecial/*/*.js', 'testUnique/*/*.js'], // specifying file patterns works as well
-        //     options: {
-        //         coverageFolder: 'coverageSpecial',
-        //         mask: '*.spec.js'
-        //     }
-        // },
-        // coveralls: {
-        //     src: ['test', 'testSpecial', 'testUnique'], // multiple folders also works
-        //     options: {
-        //         coverage:true,
-        //         check: {
-        //             lines: 75,
-        //             statements: 75
-        //         },
-        //         root: './lib', // define where the cover task should consider the root of libraries that are covered by tests
-        //         reportFormats: ['cobertura','lcovonly']
-        //     }
-        // }
-    },
-    istanbul_check_coverage: {
-      default: {
-        options: {
-          coverageFolder: 'coverage*', // will check both coverage folders and merge the coverage results
-          check: {
-            lines: 80,
-            statements: 80
-          }
-        }
-      }
-    },
     // Empties folders to start fresh
     clean: {
       dist: {
@@ -194,11 +156,43 @@ module.exports = function (grunt) {
           log: true,
           logErros: true,
           run: true,
+          mocha: {
+              ignoreLeaks: false
+          },
+          reporter: 'Spec',
           urls: ['http://<%= connect.test.options.hostname %>:<%= connect.test.options.port %>/index.html']
         }
       }
     },
-
+      // mocha: {
+      //     options: {
+      //         mocha: {
+      //             ignoreLeaks: false
+      //         },
+      //         reporter: 'Spec',
+      //         run: true,
+      //         timeout: 10000
+      //     },
+      //     test: {
+      //         src: ['<%= appConfig.test %>/index.html']
+      //     }
+      // },
+    karma: {
+        options: {
+            runnerPort: 9876,
+            browsers: ['PhantomJS', 'Chrome'],
+        },
+        unit: {
+            configFile: 'karma.conf.js',
+            browsers: ['PhantomJS'],
+            singleRun: false
+        },
+        server: {
+            configFile: 'karma.conf.js',
+            singleRun: false,
+            autoWatch: true
+        }
+    },
     // Add vendor prefixed styles
     autoprefixer: {
       options: {
@@ -306,31 +300,31 @@ module.exports = function (grunt) {
       }
     },
 
-    // By default, your `index.html`'s <!-- Usemin block --> will take care
-    // of minification. These next options are pre-configured if you do not
-    // wish to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css',
-    //         '<%= config.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
-    // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/scripts/scripts.js': [
-    //         '<%= config.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
+      // By default, your `index.html`'s <!-- Usemin block --> will take care
+      // of minification. These next options are pre-configured if you do not
+      // wish to use the Usemin blocks.
+      // cssmin: {
+      //   dist: {
+      //     files: {
+      //       '<%= config.dist %>/styles/main.css': [
+      //         '.tmp/styles/{,*/}*.css',
+      //         '<%= config.app %>/styles/{,*/}*.css'
+      //       ]
+      //     }
+      //   }
+      // },
+      // uglify: {
+      //   dist: {
+      //     files: {
+      //       '<%= config.dist %>/scripts/scripts.js': [
+      //         '<%= config.dist %>/scripts/scripts.js'
+      //       ]
+      //     }
+      //   }
+      // },
+      // concat: {
+      //   dist: {}
+      // },
 
     // Copies remaining files to places other tasks can use
     copy: {
@@ -416,6 +410,7 @@ module.exports = function (grunt) {
       'connect:livereload',
       'connect:test',
       'mocha',
+      'karma:unit',
       'watch'
     ]);
   });
@@ -436,8 +431,8 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'connect:test',
-      'mocha',
-      'blanket_mocha'
+      'mocha'//,
+      //'blanket_mocha'
     ]);
   });
 
