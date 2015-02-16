@@ -35,6 +35,9 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
+      options: {
+        livereload: true
+      },
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep']
@@ -47,9 +50,13 @@ module.exports = function (grunt) {
         }
       },
       jstest: {
-        files: ['test/spec/{,*/}*.js'],
+        files: ['test/**/*.js'],
+        // files: ['test/spec/{,*/}*.js'],
         //tasks: ['test:watch']
-        tasks: ['continue-test']
+        tasks: ['mocha:all','karma:unit'],
+        options: {
+          livereload: true
+        }
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -92,8 +99,10 @@ module.exports = function (grunt) {
       },
       test: {
         options: {
-          open: false,
+          open: true,
           port: 9001,
+          livereload: true,
+          hostname: 'localhost',
           middleware: function(connect) {
             return [
               connect.static('.tmp'),
@@ -184,8 +193,8 @@ module.exports = function (grunt) {
         },
         unit: {
             configFile: 'karma.conf.js',
-            browsers: [],
-            singleRun: false
+            browsers: ['PhantomJS'],
+            singleRun: true
         },
         server: {
             configFile: 'karma.conf.js',
@@ -393,7 +402,7 @@ module.exports = function (grunt) {
     }
   });
 
-
+  // === [ grunt serve ] ===
   grunt.registerTask('serve', 'start the server and preview your app, --allow-remote for remote access', function (target) {
     if (grunt.option('allow-remote')) {
       grunt.config.set('connect.options.hostname', '0.0.0.0');
@@ -408,9 +417,9 @@ module.exports = function (grunt) {
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
+      // 'watch:jstest',
       'connect:test',
       'mocha',
-      'karma:unit',
       'watch'
     ]);
   });
@@ -437,8 +446,9 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('continue-test', function (target) {
+    console.log('hello');
     grunt.task.run([
-      //'connect:test',
+      'connect:test',
       'mocha'
     ]);
   });
