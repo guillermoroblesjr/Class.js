@@ -184,7 +184,7 @@ module.exports = function (grunt) {
         },
         unit: {
             configFile: 'karma.conf.js',
-            browsers: ['PhantomJS'],
+            browsers: [],
             singleRun: false
         },
         server: {

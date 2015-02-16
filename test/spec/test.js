@@ -2,24 +2,7 @@
 
 (function () {
   'use strict';
-
-
-  // debugger;
-
-  // describe('Give it some context', function () {
-  //   describe('maybe a bit more context here', function () {
-  //     it('should run here few assertions', function () {
-
-  //       //Class.prototype.constructor = Class;
-        
-  //       expect(Class).to.be.a('object');
-  //       //expect(Class.prototype.constructor).to.equal(Class);
-  //     });
-  //   });
-  // });
-
-  //require(['/scripts/Class.js/Class.js']);
-
+  
   describe("Class", function() {
     describe("constructor", function() {
       it("should have a default name", function() {
