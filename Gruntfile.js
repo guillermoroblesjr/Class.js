@@ -53,7 +53,7 @@ module.exports = function (grunt) {
         files: ['test/**/*.js'],
         // files: ['test/spec/{,*/}*.js'],
         //tasks: ['test:watch']
-        tasks: ['mocha:all','karma:unit'],
+        tasks: ['mocha:all'],
         options: {
           livereload: true
         }
@@ -194,7 +194,7 @@ module.exports = function (grunt) {
         unit: {
             configFile: 'karma.conf.js',
             browsers: ['PhantomJS'],
-            singleRun: true
+            singleRun: false
         },
         server: {
             configFile: 'karma.conf.js',
