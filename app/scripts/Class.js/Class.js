@@ -67,6 +67,11 @@
        
       newParent.prototype = Object.create(Class.prototype);
       newParent.prototype.constructor = fn;
+
+      for (var x in insFn) {
+          newParent.prototype[x] = insFn[x];
+      }
+
       return newParent;
     };
 
