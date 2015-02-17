@@ -70,7 +70,25 @@ module.exports = function (config) {
 
     // optionally, configure the reporter
     coverageReporter: {
-      type: 'lcov'
+      type: 'lcov',
+      dir: 'coverage/',
+      // subdir: 'reports/',
+      subdir: function(browser) {
+        // normalization process to keep a consistent browser name accross different
+        // OS
+        // Would output the results into: './coverage/firefox/'
+        return 'reports/' + browser.toLowerCase().split(/[ /-]/)[0];
+      },
+      reporters: [
+        // reporters supporting the `file` property, use `subdir` to directly
+        // output them in the `dir` directory
+        {type: 'html', dir:'coverage/'}//,
+        // { type: 'cobertura', subdir: '.', file: 'cobertura.txt' },
+        // { type: 'lcovonly', subdir: '.', file: 'report-lcovonly.txt' },
+        // { type: 'teamcity', subdir: '.', file: 'teamcity.txt' },
+        // { type: 'text', subdir: '.', file: 'text.txt' },
+        // { type: 'text-summary', subdir: '.', file: 'text-summary.txt' },
+      ]
     }
   });
 };

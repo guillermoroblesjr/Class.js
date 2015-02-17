@@ -55,6 +55,13 @@ module.exports = function (grunt) {
           livereload: true
         }
       },
+      coverage: {
+        files: ['coverage/reports/phantomjs/index.html'],
+        tasks: [],
+        options: {
+          livereload: true
+        }
+      },
       gruntfile: {
         files: ['Gruntfile.js']
       },
@@ -119,10 +126,15 @@ module.exports = function (grunt) {
           hostname: 'localhost',
           middleware: function(connect) {
             return [
-              connect.static('coverage'),
+              //connect.static('coverage/phantomjs/lcov-report'),
+              //connect.static('/coverage/PhantomJS\\ 201.9.8\\ 20(Windows\\ 208)/lcov-report'),
+              connect.static('coverage/reports/phantomjs'),
+
               connect().use('/bower_components', connect.static('./bower_components')),
               connect().use('/node_modules', connect.static('./node_modules')),
-              connect.static('coverage/PhantomJS%201.9.8%20(Windows%208)/lcov-report/')
+              //connect().use('/coverage/PhantomJS%201.9.8%20(Windows%208)/lcov-report', connect.static('./coverage/PhantomJS%201.9.8%20(Windows%208)/lcov-report')),
+
+              //connect.static('./coverage/PhantomJS%201.9.8%20(Windows%208)/lcov-report')
             ];
           }
         }
@@ -213,8 +225,8 @@ module.exports = function (grunt) {
         unit: {
             configFile: 'karma.conf.js',
             browsers: ['PhantomJS'],
-            singleRun: false,
-            background: true
+            singleRun: true,
+            background: false
         },
         server: {
             configFile: 'karma.conf.js',
@@ -439,6 +451,7 @@ module.exports = function (grunt) {
       'connect:livereload',
       // 'watch:jstest',
       'connect:test',
+      'connect:coverage',
       'karma:continous',
       'mocha',
       'watch'

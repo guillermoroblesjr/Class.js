@@ -104,10 +104,12 @@
         expect({ a: 'b', c: 'd' }).to.have.keys('a', 'c');
       });
 
-      it('x', function(){
+      it('y', function(){
         expect({ a: 'b', c: 'd' }).to.have.keys('a', 'c');
       });
-
+      it('z', function(){
+        expect({ a: 'b', c: 'd' }).to.have.keys('a', 'c');
+      });
     });
 
     ///////////////////////////////////////////////////////////
