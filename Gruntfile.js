@@ -35,9 +35,6 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      options: {
-        livereload: true
-      },
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep']
@@ -53,7 +50,7 @@ module.exports = function (grunt) {
         files: ['test/**/*.js'],
         // files: ['test/spec/{,*/}*.js'],
         //tasks: ['test:watch']
-        tasks: ['mocha:all'],
+        tasks: [],
         options: {
           livereload: true
         }
@@ -191,10 +188,17 @@ module.exports = function (grunt) {
             runnerPort: 9876,
             browsers: ['PhantomJS', 'Chrome'],
         },
+        continous: {
+            configFile: 'karma.conf.js',
+            browsers: ['PhantomJS'],
+            singleRun: false,
+            background: true
+        },
         unit: {
             configFile: 'karma.conf.js',
             browsers: ['PhantomJS'],
-            singleRun: false
+            singleRun: false,
+            background: true
         },
         server: {
             configFile: 'karma.conf.js',
@@ -419,6 +423,7 @@ module.exports = function (grunt) {
       'connect:livereload',
       // 'watch:jstest',
       'connect:test',
+      'karma:continous',
       'mocha',
       'watch'
     ]);
@@ -474,6 +479,4 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
-
-  grunt.registerTask('coverage', ['mocha_istanbul:coverage']);
 };
