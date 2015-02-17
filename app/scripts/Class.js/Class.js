@@ -1,3 +1,17 @@
+
+/**
+ *  TODO
+ *
+ *  Remove utility functions. Add them later.
+ *  Just focus on a production version.
+ *
+ *  The production version should include 100% test code coverage.
+ *  Decide to include polyfill in tests.
+ */
+
+
+
+
 // jshint ignore: start
 (function(window, undefined){
 
