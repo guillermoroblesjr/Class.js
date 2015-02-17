@@ -449,7 +449,6 @@ module.exports = function (grunt) {
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
-      // 'watch:jstest',
       'connect:test',
       'connect:coverage',
       'karma:continous',
