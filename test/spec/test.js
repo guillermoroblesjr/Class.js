@@ -99,6 +99,15 @@
         // expect(propObj).to.not.only.have.key('property1');
 
       });
+
+      it('x', function(){
+        expect({ a: 'b', c: 'd' }).to.have.keys('a', 'c');
+      });
+
+      it('x', function(){
+        expect({ a: 'b', c: 'd' }).to.have.keys('a', 'c');
+      });
+
     });
 
     ///////////////////////////////////////////////////////////

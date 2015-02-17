@@ -111,6 +111,22 @@ module.exports = function (grunt) {
           }
         }
       },
+      coverage: {
+        options: {
+          open: true,
+          port: 9002,
+          livereload: true,
+          hostname: 'localhost',
+          middleware: function(connect) {
+            return [
+              connect.static('coverage'),
+              connect().use('/bower_components', connect.static('./bower_components')),
+              connect().use('/node_modules', connect.static('./node_modules')),
+              connect.static('coverage/PhantomJS%201.9.8%20(Windows%208)/lcov-report/')
+            ];
+          }
+        }
+      },
       dist: {
         options: {
           base: '<%= config.dist %>',
