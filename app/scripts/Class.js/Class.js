@@ -56,6 +56,6 @@
 
     return child;
   };
-   // Attach to the window
+  // Attach to the window
   window.Class = Object.create(Class.prototype);
 })(window);

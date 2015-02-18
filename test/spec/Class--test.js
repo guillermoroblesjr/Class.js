@@ -129,21 +129,21 @@
       it('should inherit a property', function(){
         var SomeClass1 = Class.make(function SomeClass1(){
           this.propertyFrom_SomeClass1 = true;
-          console.log('running SomeClass function', this);
+          // console.log('running SomeClass function', this);
           return this;
         });
         
         var classInstance1 = new SomeClass1();
         
         var SomeClass2 = Class.make(function SomeClass2(){
-          console.log('running SomeClass2 function', this);
+          // console.log('running SomeClass2 function', this);
           return this;
         }, SomeClass1);
 
         var classInstance2 = new SomeClass2();
 
         var SomeClass3 = Class.make(function SomeClass3(){
-          console.log('running SomeClass3 function', this);
+          // console.log('running SomeClass3 function', this);
           return this;
         }, SomeClass2);
 
@@ -151,7 +151,7 @@
 
         var SomeClass4 = Class.make(function SomeClass4(){
           this.property_1_From_SomeClass4 = true;
-          console.log('running SomeClass4 function', this);
+          // console.log('running SomeClass4 function', this);
           return this;
         }), SomeClass3;
 
@@ -219,8 +219,7 @@
           })(i);
         };
 
-        console.log(superDoggie);
-
+        // console.log('superDoggie instance:', superDoggie);
       });
     
     });
