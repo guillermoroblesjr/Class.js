@@ -1,9 +1,6 @@
 /**
  *  TODO
  *
- *  Remove utility functions. Add them later.
- *  Just focus on a production version.
- *
  *  The production version should include 100% test code coverage.
  *  Decide to include polyfill in tests.
  */
@@ -19,14 +16,14 @@
   Class.prototype = Object.create(Object.prototype);
   Class.prototype.constructor = Class;
   Class.prototype.createChild = function createChild(parent){
-    var child = function(){
+    var Child = function(){
       parent.call(this);
       return this;
     };
-    return child;
+    return Child;
   };
-  Class.prototype.addParentKeysToChildPrototype = function addParentKeysToChildPrototype(fn, child){
-    var insFn = new fn();
+  Class.prototype.addParentKeysToChildPrototype = function addParentKeysToChildPrototype(Fn, child){
+    var insFn = new Fn();
     for (var x in insFn) {
         child.prototype[x] = insFn[x];
     }
@@ -50,51 +47,10 @@
     // return the child so it can be instantiated
     return child;
   };
-  Class.prototype.buildChildFromObject = function buildChildFromObject(fn, Class){
-    
-    var child = (function(fn, Class){
-
-      // create the parent
-      var ClassY = Object.create(Class.prototype);
-      var ClassX = function(){
-        var child = this.createChild(parent);
-        // inherit from parent prototype
-        this.inheritFromParent(child, fn, parent);
-       
-        // return the child so it can be instantiated
-        return child;
-      };
-      parent = ClassX;
-
-      // create a child from the parent
-      var child = ClassY.createChild(parent);
-
-      // inherit from parent prototype
-      ClassY.inheritFromParent(child, fn, Object);
-
-      return child;
-    })(fn, Class);
-
-    var parent = Class;
-
-    // inherit from parent prototype
-    this.inheritFromParent(child, fn, parent);
-    
-    // add the parents keys to the child prototype
-    this.addParentKeysToChildPrototype(fn, child);
-
-    return child;
-  };
   Class.prototype.make = function make(fn, parent){
-    
-    // if the parent is undefined, the parent is thus Object
-    parent = parent || Object;
-    
+    // if the parent is undefined, the parent will then be Class
     // everything will come from Class.prototype
-    if (parent.name === 'Object') {
-      var child = this.buildChildFromObject(fn, Class);
-      return child;
-    };
+    parent = parent || Class;
 
     var child = this.buildChild(fn, parent);
 
