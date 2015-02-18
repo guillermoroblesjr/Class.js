@@ -18,62 +18,85 @@
   };
   Class.prototype = Object.create(Object.prototype);
   Class.prototype.constructor = Class;
-  Class.prototype.make = function make(fn, parent){
-    parent = parent || Object;
-    var insFn = new fn();
-    // everything will come from Class.prototype
-    if (parent.name === 'Object') {
-      var newParent = (function(Class, fn){
-
-        var ClassY = new Class();
-        var ClassX = ClassY.make(fn, Class);
-        parent = ClassX;
-
-        var child = function(){
-          parent.call(this);
-          return this;
-        };
-        child.prototype = Object.create(Object.prototype);
-        child.prototype.constructor = child;
-
-        return child;
-      })(Class, fn);
-       
-      newParent.prototype = Object.create(Class.prototype);
-      newParent.prototype.constructor = fn;
-
-      for (var x in insFn) {
-          newParent.prototype[x] = insFn[x];
-      }
-
-      return newParent;
-    };
-
-
-    // since the user isn't using <parent-fn>.call(this);
-    // to inherit the parent properties we'll have to add
-    // them to the prototype manually
+  Class.prototype.createChild = function createChild(parent){
     var child = function(){
       parent.call(this);
       return this;
     };
-    child.prototype = Object.create(parent.prototype);
-    child.prototype.constructor = fn;
-    
+    return child;
+  };
+  Class.prototype.addParentKeysToChildPrototype = function addParentKeysToChildPrototype(fn, child){
+    var insFn = new fn();
     for (var x in insFn) {
         child.prototype[x] = insFn[x];
     }
-    // Add the current properties
-    // var keys = Object.keys(insFn);
-    // var currentKey;
-    // for (var i = 0, len = keys.length; i < len; i++) {
-    //   currentKey = keys[i];
-    //   child[currentKey] = insFn[currentKey];
-    //   console.log('currentKey: ', currentKey);
-    // };
-    // fn.prototype = Object.create(parent.prototype);
-    // fn.prototype.constructor = fn;
+  };
+  Class.prototype.inheritFromParent = function inheritFromParent(child, childConstructor, parent){
+    child.prototype = Object.create(parent.prototype);
+    child.prototype.constructor = childConstructor;
+  };
+  Class.prototype.buildChild = function buildChild(fn, parent){
+    // since the user isn't using <parent-fn>.call(this);
+    // to inherit the parent properties we'll have to add
+    // them to the prototype manually
+    var child = this.createChild(parent);
+
+    // inherit from parent prototype
+    this.inheritFromParent(child, fn, parent);
     
+    // add the parents keys to the child prototype
+    this.addParentKeysToChildPrototype(fn, child);
+    
+    // return the child so it can be instantiated
+    return child;
+  };
+  Class.prototype.buildChildFromObject = function buildChildFromObject(fn, Class){
+    
+    var child = (function(fn, Class){
+
+      // create the parent
+      var ClassY = Object.create(Class.prototype);
+      var ClassX = function(){
+        var child = this.createChild(parent);
+        // inherit from parent prototype
+        this.inheritFromParent(child, fn, parent);
+       
+        // return the child so it can be instantiated
+        return child;
+      };
+      parent = ClassX;
+
+      // create a child from the parent
+      var child = ClassY.createChild(parent);
+
+      // inherit from parent prototype
+      ClassY.inheritFromParent(child, fn, Object);
+
+      return child;
+    })(fn, Class);
+
+    var parent = Class;
+
+    // inherit from parent prototype
+    this.inheritFromParent(child, fn, parent);
+    
+    // add the parents keys to the child prototype
+    this.addParentKeysToChildPrototype(fn, child);
+
+    return child;
+  };
+  Class.prototype.make = function make(fn, parent){
+    
+    // if the parent is undefined, the parent is thus Object
+    parent = parent || Object;
+    
+    // everything will come from Class.prototype
+    if (parent.name === 'Object') {
+      var child = this.buildChildFromObject(fn, Class);
+      return child;
+    };
+
+    var child = this.buildChild(fn, parent);
 
     return child;
   };
