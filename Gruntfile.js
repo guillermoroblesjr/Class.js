@@ -1,6 +1,7 @@
 // Generated on 2015-02-13 using
 // generator-webapp 0.5.1
 'use strict';
+// jshint ignore: start
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -41,7 +42,7 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        tasks: ['jshint'],
+        tasks: ['jshint:classjs'],
         options: {
           livereload: true
         }
@@ -180,6 +181,9 @@ module.exports = function (grunt) {
         '<%= config.app %>/scripts/{,*/}*.js',
         '!<%= config.app %>/scripts/vendor/*',
         'test/spec/{,*/}*.js'
+      ],
+      classjs: [
+        '<%= config.app %>/scripts/{,*/}Class.js'
       ]
     },
 
