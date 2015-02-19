@@ -2,6 +2,8 @@
 
 Making JavaScript prototypal inheritance easy since 2015.
 
+![Screenshot](https://raw.githubusercontent.com/guillermoroblesjr/Class.js/master/Console.PNG)
+
 # Getting started
 
 All you really need is to include the Class.js file with a script tag in your HTML file. After that, you just use the global 'Class' variable.
