@@ -6,7 +6,10 @@ Making JavaScript prototypal inheritance easy since 2015.
 
 All you really need is to include the Class.js file with a script tag in your HTML file. After that, you just use the global 'Class' variable.
 
+To make your life easier, name your functions! So use named function expressions. When you print to the console to debug, it's going to look great!
+
 E.g.
+    
     // Create your classes
     var AnimalClass = Class.make(function AnimalClass(){
       this.animalThing = 4;
