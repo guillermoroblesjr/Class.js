@@ -5,7 +5,7 @@
  *  Decide to include polyfill in tests.
  */
 
-(function(window, undefined){
+(function(options, scope, undefined){
 
   'use strict';
 
@@ -56,6 +56,17 @@
 
     return child;
   };
-  // Attach to the window
-  window.Class = Object.create(Class.prototype);
-})(window);
+
+  // Keep from erroring out if there's no window
+  if (!scope.window) {
+    if (options.noGlobal === true) {
+      return Object.create(Class.prototype);
+    }
+    else {
+      scope.Class = Object.create(Class.prototype);
+    }
+  } else {
+    // Attach to the window
+    window.Class = Object.create(Class.prototype);  
+  }
+})(this.options || {}, this || window);
